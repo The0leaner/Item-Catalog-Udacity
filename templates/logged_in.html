@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% block content %}
+
+
+<h5>Login</h5>
+
+<p id="result">You've already logged in. Redirecting...</p>
+
+<script>
+  setTimeout(function () {
+    window.location.href = "/";
+  }, 4000);
+
+</script>
+
+
+{% endblock %}

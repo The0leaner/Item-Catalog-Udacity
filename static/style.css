@@ -1,0 +1,93 @@
+body {
+  background-color: rgb(250,0,255);
+}
+
+main {
+  padding: 16px;
+}
+
+h5 {
+  margin: 0;
+}
+
+.page-title {
+  color: black;
+  text-decoration: none;
+}
+
+.content-with-sidebar {
+  display: flex;
+}
+
+.content-with-sidebar .details {
+  margin-left: 16px;
+}
+
+.page-content {
+  width: 100%;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.category-list {
+  max-width: 30%;
+  min-width: 150px;
+  border-right: 1px lightgray solid;
+}
+
+.catalog-list {
+  list-style: none;
+  padding: 0;
+}
+
+.catalog-list li .item-category {
+  font-style: italic;
+  color: gray;
+}
+
+@media screen and (max-width: 350px) {
+  .content-with-sidebar {
+    flex-direction: column;
+  }
+
+  .content-with-sidebar .details {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+
+  .category-list {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 1px lightgray solid;
+  }
+}
+
+.item-description {
+  margin-top: 16px;
+}
+
+#btn-signin, #result {
+  margin-top: 16px;
+}
+
+.add-item-link {
+  margin-bottom: 16px;
+}
+
+form, .error {
+  margin-top: 32px;
+}
+
+.error {
+  margin-top: 16px;
+  color: red;
+}
+
+.message {
+  margin-top: 16px;
+  color: green;
+  font-style: italic;
+  font-size: 16px;
+  margin-bottom: 16px;
+}

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% block content %}
+
+<h5>Edit item</h5>
+
+
+{% if logged_in and user_id == item.user_id %}
+<!---->
+<form method="POST">
+  <div>
+    <label for="category-selector">Category:</label>
+    <select name="category_name" id="category-selector" value="{{item.category_name}}">
+      {% for category in categories %}
+      <option value="{{category.name}}">{{category.name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <br>
+
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="name" name="name" value="{{item.name}}">
+    <label class="mdl-textfield__label" for="name">Item name</label>
+  </div>
+
+  <br>
+
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <textarea class="mdl-textfield__input" type="text" rows="3" id="description" name="description">{{item.description}}</textarea>
+    <label class="mdl-textfield__label" for="description">Description</label>
+  </div>
+
+  <br>
+
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+    Edit
+  </button>
+
+  <a href="{{url_for('itemDetails', category_name=item.category_name, item_name=item.name)}}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Cancel</a>
+</form>
+
+<!---->
+{% else %}
+<p class="error">
+  You need tolog in and the creator of an item to edit it.
+</p>
+{% endif %}
+
+<!---->
+{% endblock %}

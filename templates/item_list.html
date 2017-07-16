@@ -1,0 +1,23 @@
+{% if logged_in %}
+<!---->
+<div class="add-item-link">
+  {% if current_category %}
+  <a href="{{url_for('addNewItem', defaultCategory=current_category)}}">Add Item</a>
+  <!---->
+  {% else %}
+  <a href="{{url_for('addNewItem')}}">Add Item</a>
+  <!---->
+  {% endif %}
+</div>
+<!---->
+{% endif %}
+<h5>{{section_title}}</h5>
+
+<ul class="catalog-list">
+  {% for item in items %}
+  <li>
+    <a href="{{url_for('itemDetails', category_name=item.category_name, item_name=item.name)}}">{{item.name}}</a>
+    <span class="item-category">({{item.category_name}})</span>
+  </li>
+  {% endfor %}
+</ul>

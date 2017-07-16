@@ -1,0 +1,23 @@
+{% extends "sidebar.html" %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% block detailcontent %}
+
+<!---->
+{% with messages = get_flashed_messages() %}
+<!---->
+{% if messages %}
+<div class="message">{{messages[0]}}</div>
+
+{% endif %}
+<!---->
+{% endwith %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% include 'item_list.html' %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% endblock %}

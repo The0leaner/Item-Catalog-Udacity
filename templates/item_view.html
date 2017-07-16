@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+<!-- prevent editor auto formatting from messing up the code -->
+
+{% block content %}
+<!---->
+{% with messages = get_flashed_messages() %}
+<!---->
+{% if messages %}
+<div class="message">{{messages[0]}}</div>
+
+{% endif %}
+<!---->
+{% endwith %}
+
+<h5>{{item.name}}</h5>
+
+
+<p class="item-description">Description: {{item.description}}</p>
+
+{% if logged_in and user_id == item.user_id %}
+<!---->
+<div>
+  <a href="{{url_for('editItem', item_name=item.name)}}">Edit</a> | <a href="{{url_for('deleteItem', item_name=item.name)}}">Delete</a>
+</div>
+<!---->
+{% endif %}
+<!---->
+{% endblock %}
