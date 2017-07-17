@@ -24,7 +24,8 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-#show latest Items
+
+# show latest Items
 @app.route('/')
 @app.route('/index')
 @app.route('/index.json', endpoint="index-json")
@@ -45,7 +46,8 @@ def home():
                            section_title="Latest Items",
                            )
 
-#show Items
+
+# show Items
 @app.route('/catalog/<string:category_name>')
 @app.route('/catalog/<string:category_name>.json',
            endpoint="category-json")
@@ -68,7 +70,9 @@ def categoryItems(category_name):
                            )
 
 #  ------------------------------  login and ot ------------------------------
-#Poge for Login
+
+
+# Poge for Login
 @app.route('/login')
 def showLogin():
     access_token = login_session.get('access_token')
@@ -81,6 +85,7 @@ def showLogin():
                                CLIENT_ID=client_secrets['client_id'])
     else:
         return render_template('logged_in.html')
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -95,7 +100,7 @@ def gconnect():
     try:
 
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/vagrant/catalog/client_secret.json', scope='')
+        oauth_flow = flow_from_clientsecrets('client_secret.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -164,12 +169,12 @@ def gconnect():
     user_id = getUserID(data["email"])
     if not user_id:
         user_id = createUser(login_session)
-    login_session['user_id'] = user_id
+        login_session['user_id'] = user_id
 
     return 'logged in'
 
 
-#Page for Logout
+# Page for Logout
 @app.route('/gdisconnect')
 def gdisconnect():
     # Only disconnect a connected user.
@@ -193,7 +198,9 @@ def gdisconnect():
     return render_template('logged_out.html')
 
 #  ------------------------------  item ------------------------------
-#view of selected Item
+
+
+# view of selected Item
 @app.route('/catalog/<string:category_name>/<string:item_name>')
 @app.route('/catalog/<string:category_name>/<string:item_name>.json',
            endpoint="item-json")
@@ -212,7 +219,8 @@ def itemDetails(category_name, item_name):
                            logged_in=logged_in,
                            )
 
-#Add New Item (for logged user only)
+
+# Add New Item (for logged user only)
 @app.route('/catalog/new-item', methods=['GET', 'POST'])
 def addNewItem():
     logged_in = is_logged_in()
@@ -256,7 +264,8 @@ def addNewItem():
                                categories=categories,
                                logged_in=logged_in)
 
-#Edit Item (for logged user only)
+
+# Edit Item (for logged user only)
 @app.route('/catalog/<string:item_name>/edit', methods=['GET', 'POST'])
 def editItem(item_name):
     logged_in = is_logged_in()
@@ -303,7 +312,8 @@ def editItem(item_name):
                                user_id=user_id,
                                logged_in=logged_in)
 
-#Delete Items (for logged user only)
+
+# Delete Items (for logged user only)
 @app.route('/catalog/<string:item_name>/delete', methods=['GET', 'POST'])
 def deleteItem(item_name):
     logged_in = is_logged_in()
@@ -328,6 +338,17 @@ def deleteItem(item_name):
                                item=item,
                                user_id=user_id,
                                logged_in=logged_in)
+
+
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
 def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
@@ -345,17 +366,19 @@ def get_token():
     return ''.join(random.choice(string.ascii_uppercase + string.digits)
                    for x in xrange(32))
 
+
 def is_logged_in():
-	access_token = login_session.get('access_token')
-  	return access_token is not None
+    access_token = login_session.get('access_token')
+    return access_token is not None
+
 
 def load_client_secret():
     global client_secrets
     # with open(CLIENT_SECRETS_FILE) as f:
-    client_secrets = json.load(open('/vagrant/catalog/client_secret.json'))['web']
+    client_secrets = json.load(open('client_secret.json'))['web']
 
 if __name__ == '__main__':
     load_client_secret()
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)    
+    app.run(host='0.0.0.0', port=8000)
